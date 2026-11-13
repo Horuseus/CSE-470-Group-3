@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Yield Estimator')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Yield Estimator</h3>
+    <div class="todo mb-3">TODO (F15 - Member 4): form (loom, yarn kg, wastage %) and result/history table.</div>
+    <p>Looms: <span th:each="l : ${looms}" th:text="${l.name} + ' '"></span></p>
+</div>
+</body>
+</html>

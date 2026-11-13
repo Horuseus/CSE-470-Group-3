@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Craft Seal Assignment')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Craft Seal Assignment</h3>
+    <div class="todo mb-3">TODO (F17 - Member 4): assignment forms (weaver / product), evidence note, revoke button.</div>
+    <table class="table">
+        <thead><tr><th>Code</th><th>Weaver</th><th>Product</th><th>Assigned</th></tr></thead>
+        <tbody><tr th:each="s : ${seals}">
+            <td th:text="${s.sealCode}"></td>
+            <td th:text="${s.weaver != null} ? ${s.weaver.user.fullName} : '-'"></td>
+            <td th:text="${s.product != null} ? ${s.product.name} : '-'"></td>
+            <td th:text="${#temporals.format(s.assignedAt, 'dd MMM yyyy')}"></td>
+        </tr></tbody>
+    </table>
+</div>
+</body>
+</html>

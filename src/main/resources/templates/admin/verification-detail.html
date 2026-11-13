@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Review Application')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Review Application</h3>
+    <div class="todo mb-3">TODO (F16 - Member 1): show NID image, weaver details and the Approve / Reject / Request correction forms.</div>
+    <p><b th:text="${application.weaver.user.fullName}"></b> - NID: <span th:text="${application.weaver.nidNumber}"></span></p>
+    <img th:if="${application.weaver.nidImagePath != null}" th:src="@{/admin/verification/{id}/nid(id=${application.id})}" class="img-fluid mb-3" style="max-height:300px" alt="NID">
+    <form th:action="@{/admin/verification/{id}/approve(id=${application.id})}" method="post" class="d-inline">
+        <button class="btn btn-success">Approve</button>
+    </form>
+</div>
+</body>
+</html>

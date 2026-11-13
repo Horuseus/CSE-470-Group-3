@@ -1,0 +1,16 @@
+target/
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+*.log
+.DS_Store
+# local config & uploads (never commit NID documents!)
+src/main/resources/application-local.properties
+uploads/*
+!uploads/.gitkeep
+# python
+ai-service/.venv/
+__pycache__/

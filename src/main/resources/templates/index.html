@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-5">
+    <h1>Bunon (বুনন)</h1>
+    <p class="lead">Handloom Weaver Cooperative Platform - buy directly from verified weavers of Bangladesh.</p>
+    <a class="btn btn-dark me-2" th:href="@{/register/weaver}">Join as a Weaver</a>
+    <a class="btn btn-outline-dark me-2" th:href="@{/register/customer}">Register as a Customer</a>
+    <a class="btn btn-link" th:href="@{/login}">Login</a>
+</div>
+</body>
+</html>

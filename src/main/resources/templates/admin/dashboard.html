@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Admin Dashboard</h3>
+    <p>Review weaver applications under <a th:href="@{/admin/verification}">Verification</a> and assign <a th:href="@{/admin/seals}">Craft Seals</a>.</p>
+</div>
+</body>
+</html>
