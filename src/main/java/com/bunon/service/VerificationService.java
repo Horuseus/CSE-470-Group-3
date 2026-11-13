@@ -7,6 +7,7 @@ import com.bunon.repository.VerificationApplicationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,16 +34,37 @@ public class VerificationService {
 
     @Transactional
     public void approve(Long id, User admin) {
-        // TODO F16: status=APPROVED, weaver.verified=true, reviewedAt/reviewedBy
+        review(id, admin, VerificationStatus.APPROVED, null);
     }
 
     @Transactional
     public void reject(Long id, User admin, String note) {
-        // TODO F16: status=REJECTED + adminNote (note required)
+        requireNote(note);
+        review(id, admin, VerificationStatus.REJECTED, note);
     }
 
     @Transactional
     public void requestCorrection(Long id, User admin, String note) {
-        // TODO F16: status=CORRECTION_REQUESTED + adminNote; weaver can then resubmit (see AuthController TODO)
+        requireNote(note);
+        review(id, admin, VerificationStatus.CORRECTION_REQUESTED, note);
+    }
+
+    private void review(Long id, User admin, VerificationStatus status, String note) {
+        VerificationApplication app = get(id);
+        if (app.getStatus() != VerificationStatus.PENDING) {
+            throw new IllegalStateException("This application has already been reviewed");
+        }
+        app.setStatus(status);
+        app.setAdminNote(note);
+        app.setReviewedAt(LocalDateTime.now());
+        app.setReviewedBy(admin);
+        app.getWeaver().setVerified(status == VerificationStatus.APPROVED);
+        applicationRepository.save(app);
+    }
+
+    private void requireNote(String note) {
+        if (note == null || note.isBlank()) {
+            throw new IllegalArgumentException("A note is required");
+        }
     }
 }
