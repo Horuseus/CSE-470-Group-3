@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Customer Registration')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4" style="max-width: 520px;">
+    <h3 class="mb-3">Register as a Customer</h3>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <form th:action="@{/register/customer}" th:object="${form}" method="post">
+        <div class="mb-3"><label class="form-label">Full name</label>
+            <input class="form-control" th:field="*{fullName}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div></div>
+        <div class="mb-3"><label class="form-label">Email</label>
+            <input class="form-control" type="email" th:field="*{email}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div></div>
+        <div class="mb-3"><label class="form-label">Password</label>
+            <input class="form-control" type="password" th:field="*{password}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div></div>
+        <div class="mb-3"><label class="form-label">Phone</label>
+            <input class="form-control" th:field="*{phone}"></div>
+        <button class="btn btn-dark" type="submit">Register</button>
+    </form>
+</div>
+</body>
+</html>

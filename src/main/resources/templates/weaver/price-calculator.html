@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pricing Breakdown Calculator')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Pricing Breakdown Calculator</h3>
+    <div class="todo mb-3">TODO (F4 - Member 3): input form (material cost, labor hours, hourly rate, other expenses, margin %) and breakdown result.</div>
+    <ul><li th:each="h : ${history}" th:text="${h.estimatedPrice}"></li></ul>
+</div>
+</body>
+</html>

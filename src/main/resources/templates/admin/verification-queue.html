@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Verification Queue')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Verification Queue</h3>
+    <div class="todo mb-3">TODO (F16 - Member 1): style the queue, add filters for APPROVED/REJECTED/CORRECTION_REQUESTED.</div>
+    <table class="table table-striped">
+        <thead><tr><th>#</th><th>Weaver</th><th>Location</th><th>Submitted</th><th></th></tr></thead>
+        <tbody>
+        <tr th:each="a : ${applications}">
+            <td th:text="${a.id}"></td>
+            <td th:text="${a.weaver.user.fullName}"></td>
+            <td th:text="${a.weaver.location}"></td>
+            <td th:text="${#temporals.format(a.submittedAt, 'dd MMM yyyy HH:mm')}"></td>
+            <td><a class="btn btn-sm btn-dark" th:href="@{/admin/verification/{id}(id=${a.id})}">Review</a></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(applications)}"><td colspan="5" class="text-muted">No pending applications.</td></tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

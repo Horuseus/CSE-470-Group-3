@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Weaver Registration')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4" style="max-width: 640px;">
+    <h3 class="mb-3">Join as a Weaver</h3>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <form th:action="@{/register/weaver}" th:object="${form}" method="post" enctype="multipart/form-data">
+        <div class="mb-3"><label class="form-label">Full name</label>
+            <input class="form-control" th:field="*{fullName}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div></div>
+        <div class="mb-3"><label class="form-label">Email</label>
+            <input class="form-control" type="email" th:field="*{email}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div></div>
+        <div class="mb-3"><label class="form-label">Password</label>
+            <input class="form-control" type="password" th:field="*{password}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div></div>
+        <div class="mb-3"><label class="form-label">Phone</label>
+            <input class="form-control" th:field="*{phone}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div></div>
+        <div class="mb-3"><label class="form-label">Location (district)</label>
+            <input class="form-control" th:field="*{location}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></div></div>
+        <div class="mb-3"><label class="form-label">Specialization (e.g. Jamdani, Nakshi Kantha)</label>
+            <input class="form-control" th:field="*{specialization}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}"></div></div>
+        <div class="mb-3"><label class="form-label">NID number</label>
+            <input class="form-control" th:field="*{nidNumber}">
+            <div class="text-danger small" th:if="${#fields.hasErrors('nidNumber')}" th:errors="*{nidNumber}"></div></div>
+        <div class="mb-3"><label class="form-label">NID photo (JPG/PNG/PDF)</label>
+            <input class="form-control" type="file" name="nidImage" accept=".jpg,.jpeg,.png,.pdf"></div>
+        <button class="btn btn-dark" type="submit">Submit for verification</button>
+    </form>
+</div>
+</body>
+</html>

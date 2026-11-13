@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Availability & Pre-orders')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Availability & Pre-orders</h3>
+    <div class="todo mb-3">TODO (F5 - Member 3): add-product form, per-product stock / pre-order / expected-date update form.</div>
+    <table class="table">
+        <thead><tr><th>Product</th><th>Stock</th><th>Type</th><th>Expected</th></tr></thead>
+        <tbody><tr th:each="p : ${products}">
+            <td th:text="${p.name}"></td><td th:text="${p.stockQuantity}"></td>
+            <td th:text="${p.availabilityType}"></td><td th:text="${p.expectedCompletionDate}"></td>
+        </tr></tbody>
+    </table>
+</div>
+</body>
+</html>

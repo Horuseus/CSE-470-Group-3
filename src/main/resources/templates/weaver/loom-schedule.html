@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Loom Capacity & Scheduler')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <h3>Loom Capacity & Scheduler</h3>
+    <div class="todo mb-3">TODO (F1 - Member 2): edit/delete buttons, earliest-completion estimator form.</div>
+    <form th:action="@{/weaver/looms}" method="post" class="row g-2 mb-4">
+        <div class="col-md-4"><input class="form-control" name="name" placeholder="Loom name" required></div>
+        <div class="col-md-3"><input class="form-control" name="loomType" placeholder="Type (pit, frame...)"></div>
+        <div class="col-md-3"><input class="form-control" type="number" name="weeklyWorkingHours" placeholder="Hours / week" min="1" max="84" required></div>
+        <div class="col-md-2"><button class="btn btn-dark w-100">Add loom</button></div>
+    </form>
+    <table class="table table-striped">
+        <thead><tr><th>Name</th><th>Type</th><th>Weekly hours</th></tr></thead>
+        <tbody><tr th:each="l : ${looms}">
+            <td th:text="${l.name}"></td><td th:text="${l.loomType}"></td><td th:text="${l.weeklyWorkingHours}"></td>
+        </tr></tbody>
+    </table>
+</div>
+</body>
+</html>
