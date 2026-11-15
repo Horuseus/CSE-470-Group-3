@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Log in')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <div class="auth">
+    <aside class="auth-side weave">
+      <span class="hero-mark">বুনন</span>
+      <h2>Welcome back</h2>
+      <p>One login for everyone. After you sign in you land on a dashboard made for your role.</p>
+      <ul>
+        <li>🧵 Weavers: looms, designs, pricing, stock</li>
+        <li>🤝 Cooperative members: weaver tools plus group buying (coming)</li>
+        <li>🛍 Customers: shop and verify products</li>
+        <li>🛡 Administrators: manage the platform</li>
+      </ul>
+    </aside>
+
+    <section class="auth-card">
+      <h1>Log in</h1>
+      <div th:replace="~{fragments :: flash}"></div>
+      <div class="flash err" th:if="${param.error}">Wrong email or password. Please try again.</div>
+      <div class="flash ok" th:if="${param.logout}">You have been logged out.</div>
+
+      <!-- Spring Security reads the fields called "username" and "password" -->
+      <form method="post" th:action="@{/login}">
+        <label for="username">Email or username</label>
+        <input id="username" type="text" name="username" autocomplete="username" required autofocus>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" autocomplete="current-password" required>
+        <p><button class="btn btn-block">Log in</button></p>
+      </form>
+      <p class="muted">New to Bunon? <a class="link-strong" th:href="@{/signup}">Create an account</a></p>
+
+      <details class="demo">
+        <summary>Demo accounts (password for all: <code>bunon123</code>)</summary>
+        <ul>
+          <li><code>weaver@bunon.test</code> · Weaver</li>
+          <li><code>coop@bunon.test</code> · Cooperative member</li>
+          <li><code>customer@bunon.test</code> · Customer</li>
+          <li><code>admin@bunon.test</code> · Administrator</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

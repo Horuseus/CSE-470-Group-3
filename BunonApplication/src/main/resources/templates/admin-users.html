@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Users')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <h1 class="page-title">All users</h1>
+  <p class="lead">Administrator view. Passwords are stored scrambled and cannot be read, even here.</p>
+  <table class="list">
+    <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th></tr>
+    <tr th:each="u : ${users}">
+      <td th:text="${u.name}">Name</td>
+      <td th:text="${u.email}">email</td>
+      <td th:text="${u.phone}">phone</td>
+      <td><span class="badge b-role" th:text="${u.role.label}">Role</span></td>
+    </tr>
+  </table>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
