@@ -1,0 +1,11 @@
+# STEP 1: copy this file and name the copy  application-local.properties  (same folder)
+# STEP 2: type your own MySQL username and password below
+# The copy is git-ignored, so your password is never uploaded to GitHub.
+
+# The database "bunon" is created automatically if it does not exist.
+spring.datasource.url=jdbc:mysql://localhost:3306/bunon?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=YOUR_MYSQL_PASSWORD
+
+# Optional: address printed inside QR codes (for scanning with a phone)
+# bunon.public-url=http://192.168.0.5:8080
