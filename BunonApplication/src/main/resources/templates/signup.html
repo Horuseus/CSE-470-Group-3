@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Sign up')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <div class="auth auth-wide">
+    <section class="auth-card">
+      <h1>Create your account</h1>
+      <p class="lead">Choose who you are. Administrator accounts are created by Bunon staff.</p>
+      <div th:replace="~{fragments :: flash}"></div>
+
+      <form method="post" th:action="@{/signup}">
+        <!-- Three big radio cards. The page script below shows the right extra fields for the chosen one. -->
+        <div class="roles">
+          <label class="role-card">
+            <input type="radio" name="role" value="WEAVER" th:checked="${role == 'WEAVER'}">
+            <b>🧵 Weaver</b><span>Sell your handloom directly to customers.</span>
+          </label>
+          <label class="role-card">
+            <input type="radio" name="role" value="COOPERATIVE_MEMBER" th:checked="${role == 'COOPERATIVE_MEMBER'}">
+            <b>🤝 Cooperative member</b><span>A weaver who belongs to a cooperative.</span>
+          </label>
+          <label class="role-card">
+            <input type="radio" name="role" value="CUSTOMER" th:checked="${role == 'CUSTOMER'}">
+            <b>🛍 Customer</b><span>Buy, order custom pieces, verify products.</span>
+          </label>
+        </div>
+
+        <div class="row">
+          <div><label for="name">Full name</label><input id="name" name="name" th:value="${name}" required></div>
+          <div><label for="phone">Phone</label><input id="phone" name="phone" th:value="${phone}" placeholder="01XXXXXXXXX"></div>
+        </div>
+        <div class="row">
+          <div><label for="username">Username</label><input id="username" name="username" th:value="${username}" pattern="[a-z0-9_]{3,20}" title="3 to 20 characters: small letters, numbers or underscore" placeholder="e.g. rahima_tangail" required></div>
+          <div><label for="email">Email</label><input id="email" type="email" name="email" th:value="${email}" autocomplete="username" required></div>
+        </div>
+
+        <div class="row">
+          <div><label for="password">Password (8+ characters)</label><input id="password" type="password" name="password" minlength="8" autocomplete="new-password" required></div>
+          <div><label for="confirmPassword">Confirm password</label><input id="confirmPassword" type="password" name="confirmPassword" minlength="8" autocomplete="new-password" required></div>
+        </div>
+
+        <div id="weaverFields" class="row">
+          <div><label for="district">District</label><input id="district" name="district" th:value="${district}" placeholder="e.g. Tangail"></div>
+          <div><label for="specialization">What do you weave?</label><input id="specialization" name="specialization" th:value="${specialization}" placeholder="e.g. Jamdani, khadi"></div>
+        </div>
+        <div id="customerFields" hidden>
+          <label for="deliveryAddress">Delivery address</label>
+          <input id="deliveryAddress" name="deliveryAddress" th:value="${deliveryAddress}">
+        </div>
+
+        <p><button class="btn btn-block">Create account</button></p>
+      </form>
+      <p class="muted">Already have an account? <a class="link-strong" th:href="@{/login}">Log in</a></p>
+    </section>
+  </div>
+</main>
+
+<script>
+  // Show "district / what do you weave" for weavers, "delivery address" for customers.
+  var radios = document.querySelectorAll('input[name="role"]');
+  var weaverBox = document.getElementById('weaverFields');
+  var customerBox = document.getElementById('customerFields');
+  var district = document.getElementById('district');
+
+  function refresh() {
+    var role = document.querySelector('input[name="role"]:checked').value;
+    var isCustomer = role === 'CUSTOMER';
+    weaverBox.hidden = isCustomer;
+    customerBox.hidden = !isCustomer;
+    district.required = !isCustomer;        // weavers must give a district
+  }
+  radios.forEach(function (r) { r.addEventListener('change', refresh); });
+  refresh();
+</script>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

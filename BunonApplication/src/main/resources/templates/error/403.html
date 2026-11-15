@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('No access')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+<main class="container">
+  <div class="panel center">
+    <h1 class="page-title">You cannot open this page</h1>
+    <p class="lead" style="margin:0 auto 20px">This page is for another type of account. Log in with the right account, or go back to the shop.</p>
+    <a class="btn" th:href="@{/}">Back to the shop</a>
+    <a class="btn btn-outline" th:href="@{/login}">Log in</a>
+  </div>
+</main>
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
