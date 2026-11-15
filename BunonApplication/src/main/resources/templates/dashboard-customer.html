@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Bunon')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="dash dash-customer">
+  <section class="cust-hero weave">
+    <div class="container">
+      <p class="eyebrow light">Welcome back</p>
+      <h1 th:text="'Hello, ' + ${user.name}">Hello</h1>
+      <p>Find something woven by hand, made by the weaver who wove it.</p>
+      <div class="l-actions">
+        <a class="btn btn-light" th:href="@{/shop}">Shop handloom</a>
+        <a class="btn btn-ghost-light" th:href="@{/passport}">Verify a product</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container cust-body">
+    <div th:replace="~{fragments :: flash}"></div>
+
+    <div class="section-head first"><h2>Fresh from the looms</h2><a th:href="@{/shop}">See all</a></div>
+    <div class="hscroll">
+      <a th:each="p, s : ${latest}" class="pcard" th:href="@{/passport/{id}(id=${p.id})}">
+        <div class="img weave" th:classappend="${s.odd} ? 't2' : 't4'">
+          <img th:if="${p.imageFile != null}" th:src="@{'/uploads/' + ${p.imageFile}}" th:alt="${p.title}">
+        </div>
+        <div class="body">
+          <b th:text="${p.title}">Product</b>
+          <div class="muted small" th:text="'by ' + ${p.weaver.name}">by Weaver</div>
+          <div class="price" th:text="'৳ ' + ${#numbers.formatDecimal(p.price, 1, 'COMMA', 0, 'POINT')}">৳ 0</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="grid-2 cust-grid">
+      <section class="panel">
+        <h3>Delivery address</h3>
+        <p th:text="${user.deliveryAddress} ?: 'Not set yet'">address</p>
+        <a class="btn btn-outline btn-small" th:href="@{/account}">Change in my account</a>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

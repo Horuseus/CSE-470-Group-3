@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Cooperative hub')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="dash dash-coop">
+  <div class="coop-banner weave">
+    <div class="container coop-banner-in">
+      <span th:replace="~{fragments :: avatar(${user}, 'xl')}"></span>
+      <div>
+        <p class="eyebrow light">Cooperative member hub</p>
+        <h1 th:text="${user.name}">Name</h1>
+        <p th:text="'📍 ' + ${weaver.district} + ' · ' + ${#lists.size(products)} + ' products'">info</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="coop-tabs">
+      <a href="#weaving">My weaving</a>
+      <a href="#cooperative">Cooperative</a>
+      <a href="#orders">Orders</a>
+      <a th:href="@{/account}">My account</a>
+    </div>
+    <div th:replace="~{fragments :: flash}"></div>
+
+    <section id="weaving" class="coop-block">
+      <h2>My weaving</h2>
+      <div class="coop-cards">
+        <a th:href="@{/looms}"><b>🧵 Looms</b><span th:text="${loomCount} + ' looms · ' + ${pendingHours} + ' h waiting'">looms</span></a>
+        <a th:href="@{/designs}"><b>🎨 Designs</b><span th:text="${designCount} + ' registered'">designs</span></a>
+        <a th:href="@{/price}"><b>💰 Pricing</b><span>Work out a fair price</span></a>
+        <a th:href="@{/availability}"><b>📦 Stock &amp; pre-orders</b><span>Products and QR passports</span></a>
+        <a th:href="@{/shop}"><b>🛍 My shop</b><span>See your own products</span></a>
+      </div>
+    </section>
+
+    <section id="cooperative" class="coop-block">
+      <h2>Cooperative</h2>
+      <div class="coop-cards soon">
+        <div><b>🤝 Group buying</b><span>Order yarn and dyes together at a better price.</span><em>Coming with F11</em></div>
+        <div><b>📈 Price tracker</b><span>Watch yarn and dye prices and catch drops.</span><em>Coming with F13</em></div>
+        <div><b>📒 Revenue ledger</b><span>A clear record of income and shares.</span><em>Coming with F14</em></div>
+        <div><b>🏦 Micro-loans</b><span>Apply and track repayments.</span><em>Coming with F12</em></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

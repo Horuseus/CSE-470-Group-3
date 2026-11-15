@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('বুনন: Bangladesh handloom heritage')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<!-- 1. HERO -->
+<section class="l-hero">
+  <div class="container l-hero-grid">
+    <div>
+      <p class="eyebrow light">তাঁতশিল্প · Bangladesh's handloom heritage</p>
+      <h1 class="l-title">বুনন</h1>
+      <p class="l-sub">Woven by hand. Sold by the weaver.</p>
+      <p class="l-text">For centuries the looms of Bengal clothed the world. Today the families who keep that art alive still struggle to earn a fair price.
+        Bunon connects weavers directly with the people who value their work, with no mohajan in between.</p>
+      <div class="l-actions">
+        <a class="btn btn-accent" th:href="@{/signup(role='WEAVER')}">Join as a weaver</a>
+        <a class="btn btn-light" th:href="@{/shop}">Browse the shop</a>
+        <a class="btn btn-ghost-light" th:href="@{/login}">Log in</a>
+      </div>
+    </div>
+    <div class="l-cloth weave">
+      <span class="chip">Muslin</span><span class="chip">Jamdani</span><span class="chip">Tangail saree</span>
+      <span class="chip">Rajshahi silk</span><span class="chip">Nakshi kantha</span><span class="chip">Gamcha</span>
+      <p>Every thread tells where it came from.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2. HISTORY -->
+<section id="history" class="l-section">
+  <div class="container">
+    <p class="eyebrow">Our story</p>
+    <h2 class="l-h2">A craft older than the nation</h2>
+    <p class="l-lead">তাঁতশিল্প, the art of the handloom, is one of the oldest living crafts of Bengal.</p>
+
+    <div class="history">
+      <div class="h-item"><span class="h-when">Ancient times</span>
+        <p>Fine cotton cloth from the Ganges delta was already traded far beyond Bengal. The river country, its cotton and its skilled hands made the cloth famous.</p></div>
+      <div class="h-item"><span class="h-when">Mughal era</span>
+        <p>Dhaka muslin was so fine it was called "woven air" and dressed royal courts. Jamdani, with motifs woven into the cloth thread by thread, flourished.</p></div>
+      <div class="h-item"><span class="h-when">Colonial decline</span>
+        <p>From the 18th century, colonial trade policy and cheap machine-made cloth pushed many muslin weavers out of work, and countless looms fell silent.</p></div>
+      <div class="h-item"><span class="h-when">After independence</span>
+        <p>Villages around Tangail, Sirajganj, Pabna and Narsingdi kept their looms running. Sarees, lungis and gamchas became everyday cloth for millions.</p></div>
+      <div class="h-item"><span class="h-when">2013</span>
+        <p>UNESCO recognised the traditional art of Jamdani weaving as Intangible Cultural Heritage of Humanity.</p></div>
+      <div class="h-item"><span class="h-when">Today</span>
+        <p>Jamdani and Nakshi Kantha are protected as geographical indication (GI) products in Bangladesh, yet the people who make them still struggle for a fair price.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. AREAS -->
+<section id="areas" class="l-section l-alt">
+  <div class="container">
+    <p class="eyebrow">Where it is woven</p>
+    <h2 class="l-h2">From the river plains to the hills</h2>
+    <div class="areas">
+      <div class="area weave t1"><b>Tangail</b><span>Tangail saree: soft cotton and silk-blend sarees from villages around the district.</span></div>
+      <div class="area weave t2"><b>Rupganj &amp; Sonargaon</b><span>The home of Dhakai Jamdani, the finest figured weave of Bengal.</span></div>
+      <div class="area weave t3"><b>Rajshahi &amp; Chapainawabganj</b><span>Rajshahi silk, from the mulberry groves of the Barind region.</span></div>
+      <div class="area weave t4"><b>Sirajganj &amp; Pabna</b><span>Everyday handloom cotton: sarees, lungis and gamchas.</span></div>
+      <div class="area weave t1"><b>Jamalpur &amp; Mymensingh</b><span>Nakshi Kantha, stories stitched into layers of old cloth.</span></div>
+      <div class="area weave t2"><b>Rangamati &amp; Bandarban</b><span>Backstrap-loom textiles woven by indigenous communities of the hills.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STRUGGLE -->
+<section id="struggle" class="l-section">
+  <div class="container">
+    <p class="eyebrow">The weaver's struggle</p>
+    <h2 class="l-h2">Skilled hands, small earnings</h2>
+    <p class="l-lead">Weaving a single saree can take days or weeks. Too often the profit goes to someone else.</p>
+    <div class="struggle">
+      <div class="s-card"><span class="s-num">01</span><b>The mohajan trap</b>
+        <p>Many weavers take yarn on credit from a middleman and must sell the finished cloth to him at a low, fixed price.</p></div>
+      <div class="s-card"><span class="s-num">02</span><b>Rising yarn costs</b>
+        <p>Yarn and dye prices swing, and small weavers buy in small amounts at higher prices with no bargaining power.</p></div>
+      <div class="s-card"><span class="s-num">03</span><b>Copied designs</b>
+        <p>Power looms and printers copy hand-woven motifs. A weaver has no easy way to prove who created a design first.</p></div>
+      <div class="s-card"><span class="s-num">04</span><b>No proof of origin</b>
+        <p>Buyers cannot tell real handloom from imitation, so honest weavers lose sales to cheap copies.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. HOW BUNON HELPS -->
+<section class="l-section l-alt">
+  <div class="container">
+    <p class="eyebrow">How Bunon helps</p>
+    <h2 class="l-h2">Fair, direct and verifiable</h2>
+    <div class="helps">
+      <div class="help"><b>🛍 Sell directly</b><span>Weavers list their own products and set their own prices. No mohajan.</span></div>
+      <div class="help"><b>🎨 Protect designs</b><span>Register an original design with a date stamp. A picture check warns about look-alikes.</span></div>
+      <div class="help"><b>🔖 Prove origin</b><span>Every product carries a QR passport with the weaver, loom, materials and a tamper-proof history.</span></div>
+      <div class="help"><b>💰 Price fairly</b><span>A calculator turns material, labor and costs into a price that pays for the work.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CALL TO ACTION -->
+<section class="l-cta">
+  <div class="container">
+    <h2>Be part of the weave</h2>
+    <p>Join as a weaver, a cooperative member, or a customer who values handmade cloth.</p>
+    <div class="l-actions center">
+      <a class="btn btn-accent" th:href="@{/signup(role='WEAVER')}">I am a weaver</a>
+      <a class="btn btn-light" th:href="@{/signup(role='CUSTOMER')}">I want to buy</a>
+      <a class="btn btn-ghost-light" th:href="@{/login}">Log in</a>
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{fragments :: footer}"></div>
+<script>
+  // Smooth scroll to a section, stopping right under the sticky top bar
+  (function () {
+    var EXTRA_SPACE = 40;   // visible gap between the top bar and the section (change if you like)
+
+    function goTo(id, smooth) {
+      var target = document.getElementById(id);
+      var header = document.querySelector('.site-header');
+      if (!target) return;
+      var headerHeight = header ? header.offsetHeight : 0;
+      var y = target.getBoundingClientRect().top + window.pageYOffset - headerHeight + EXTRA_SPACE;
+      window.scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
+    }
+
+    // Clicking a menu link such as "Our Story" (href="/#history")
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href*="#"]');
+      if (!link) return;
+      var url = new URL(link.href, window.location.href);
+      if (url.pathname !== window.location.pathname || !url.hash) return;   // other page: let the browser handle it
+      var id = url.hash.substring(1);
+      if (!document.getElementById(id)) return;
+      e.preventDefault();
+      history.pushState(null, '', url.hash);
+      goTo(id, true);
+    });
+
+    // Opening the page directly as localhost:8080/#history
+    window.addEventListener('load', function () {
+      if (window.location.hash) {
+        setTimeout(function () { goTo(window.location.hash.substring(1), false); }, 150);
+      }
+    });
+  })();
+</script>
+</body>
+</html>
