@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Admin control room')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container admin-wrap">
+  <div class="dash-admin">
+    <div class="admin-top">
+      <div>
+        <p class="eyebrow light">Administrator</p>
+        <h1 th:text="'Control room · ' + ${user.name}">Control room</h1>
+      </div>
+      <a class="btn btn-small" th:href="@{/admin/users}">All users</a>
+    </div>
+    <div th:replace="~{fragments :: flash}"></div>
+
+    <div class="a-stats">
+      <div class="a-stat"><span>Users</span><b th:text="${userCount}">0</b></div>
+      <div class="a-stat"><span>Weavers</span><b th:text="${weaverCount}">0</b></div>
+      <div class="a-stat"><span>Cooperative members</span><b th:text="${coopCount}">0</b></div>
+      <div class="a-stat"><span>Customers</span><b th:text="${customerCount}">0</b></div>
+      <div class="a-stat"><span>Products</span><b th:text="${productCount}">0</b></div>
+      <div class="a-stat"><span>Looms</span><b th:text="${loomCount}">0</b></div>
+      <div class="a-stat"><span>Registered designs</span><b th:text="${designCount}">0</b></div>
+    </div>
+
+    <div class="a-grid">
+      <section class="a-panel">
+        <h3>Newest accounts</h3>
+        <table class="a-table">
+          <tr><th>Name</th><th>Username</th><th>Role</th></tr>
+          <tr th:each="u : ${recentUsers}">
+            <td th:text="${u.name}">Name</td>
+            <td th:text="${u.username}">username</td>
+            <td th:text="${u.role.label}">Role</td>
+          </tr>
+        </table>
+      </section>
+      <section class="a-panel">
+        <h3>Work queue</h3>
+        <ul class="a-queue">
+          <li><b>Weaver verification</b><span>Not built yet (F16)</span></li>
+          <li><b>Deliveries</b><span>Not built yet (F18)</span></li>
+          <li><b>Disputes</b><span>Not built yet (F20)</span></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

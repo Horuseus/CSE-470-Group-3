@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Weaver dashboard')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container workspace">
+  <aside th:replace="~{fragments :: weaverSidebar('dashboard')}"></aside>
+
+  <main class="workspace-main">
+    <p class="eyebrow">Weaver dashboard</p>
+    <h1 class="page-title" th:text="'Welcome, ' + ${user.name}">Welcome</h1>
+    <p class="lead">
+      📍 <span th:text="${weaver.district}">Tangail</span><span th:if="${not #strings.isEmpty(weaver.shopAddress)}" th:text="', ' + ${weaver.shopAddress}"></span>
+      · <a class="link-strong" th:href="@{/account}">Change shop location</a>
+    </p>
+    <div th:replace="~{fragments :: flash}"></div>
+
+    <div class="stats">
+      <div class="stat"><span>Products</span><b th:text="${#lists.size(products)}">0</b></div>
+      <div class="stat"><span>Looms</span><b th:text="${loomCount}">0</b></div>
+      <div class="stat"><span>Hours of work waiting</span><b th:text="${pendingHours}">0</b></div>
+    </div>
+
+    <div class="section-head first"><h2>My shop</h2><a th:href="@{/availability}">Manage stock</a></div>
+    <p th:if="${#lists.isEmpty(products)}" class="lead">You have no products yet. Add your first one under Stock &amp; Pre-orders.</p>
+    <div class="products three">
+      <a th:each="p, s : ${products}" class="pcard" th:href="@{/passport/{id}(id=${p.id})}">
+        <div class="img weave" th:classappend="${s.odd} ? 't2' : 't1'">
+          <img th:if="${p.imageFile != null}" th:src="@{'/uploads/' + ${p.imageFile}}" th:alt="${p.title}">
+        </div>
+        <div class="body">
+          <b th:text="${p.title}">Product</b>
+          <div class="price" th:text="'৳ ' + ${#numbers.formatDecimal(p.price, 1, 'COMMA', 0, 'POINT')}">৳ 0</div>
+          <span class="badge" th:classappend="${p.preorder} ? 'b-pre' : (${p.stockQty > 0} ? 'b-stock' : 'b-out')" th:text="${p.availabilityLabel}">In stock</span>
+        </div>
+      </a>
+    </div>
+  </main>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
