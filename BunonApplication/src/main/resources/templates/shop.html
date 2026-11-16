@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Shop')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+
+  <!-- Banners and category cards are for shoppers. A weaver sees only their own shop. -->
+  <div th:unless="${myShopOnly}">
+    <section class="hero">
+      <a class="hero-card hero-primary" th:href="@{/shop}">
+        <span class="hero-mark">বুনন</span>
+        <h1>New<br>Arrivals</h1>
+        <p>Fresh from the loom</p>
+        <span class="pill">DIRECT FROM WEAVERS</span>
+      </a>
+      <a class="hero-card hero-accent" th:href="@{/shop}">
+        <h1>Pre-order<br>Season</h1>
+        <p>Fair prices, no mohajan</p>
+        <span class="pill">ONLINE ONLY</span>
+      </a>
+    </section>
+    <div th:replace="~{fragments :: tiles('Womenswear', ${womenCategories})}"></div>
+    <div th:replace="~{fragments :: tiles('Menswear', ${menCategories})}"></div>
+  </div>
+
+  <section id="shop">
+    <div class="section-head" th:classappend="${myShopOnly} ? 'first'">
+      <h2 th:text="${myShopOnly} ? 'My shop' : (${category != null and !category.isBlank()} ? ${category} : 'Latest handloom')">Latest handloom</h2>
+      <a th:if="${myShopOnly}" th:href="@{/availability}">Add or edit products</a>
+      <a th:if="${!myShopOnly and category != null and !category.isBlank()}" th:href="@{/shop}">Show all</a>
+    </div>
+    <p th:if="${myShopOnly}" class="lead">Only your own products are shown here.</p>
+
+    <p th:if="${#lists.isEmpty(products)}" class="lead">Nothing here yet.</p>
+
+    <div class="products">
+      <a th:each="p, s : ${products}" class="pcard" th:href="@{/passport/{id}(id=${p.id})}">
+        <div class="img weave" th:classappend="${s.odd} ? 't2' : 't1'">
+          <img th:if="${p.imageFile != null}" th:src="@{'/uploads/' + ${p.imageFile}}" th:alt="${p.title}">
+        </div>
+        <div class="body">
+          <b th:text="${p.title}">Jamdani Saree</b>
+          <div class="muted" th:text="${p.category} + ' · ' + ${p.weaveType}">Saree · Jamdani</div>
+          <div class="price" th:text="'৳ ' + ${#numbers.formatDecimal(p.price, 1, 'COMMA', 0, 'POINT')}">৳ 8,500</div>
+          <span class="badge" th:classappend="${p.preorder} ? 'b-pre' : (${p.stockQty > 0} ? 'b-stock' : 'b-out')"
+                th:text="${p.availabilityLabel}">In stock</span>
+          <span class="muted small" th:if="${p.preorder and p.expectedDate != null}"
+                th:text="'Ready ' + ${#temporals.format(p.expectedDate, 'dd MMM yyyy')}"></span>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

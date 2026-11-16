@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** F5 - Availability & Pre-order Management (also where a weaver adds a product). */
 @Controller
 public class AvailabilityController {
 
@@ -131,7 +130,6 @@ public class AvailabilityController {
         return "redirect:/availability";
     }
 
-    // Returns an error message, or null when everything is fine.
     private String checkAvailability(int stockQty, boolean preorder, LocalDate expectedDate) {
         if (stockQty < 0) {
             return "Stock cannot be negative.";
