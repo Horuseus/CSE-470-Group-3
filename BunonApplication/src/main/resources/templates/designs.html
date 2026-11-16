@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Design Registry')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container workspace">
+  <aside th:replace="~{fragments :: weaverSidebar('designs')}"></aside>
+<main class="workspace-main">
+  <h1 class="page-title">Design and motif registry</h1>
+  <p class="lead">Register your original design with a date stamp. New uploads are compared with every registered design and look-alikes are flagged.</p>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h3>Register a design</h3>
+      <form method="post" enctype="multipart/form-data" th:action="@{/designs/register}">
+        <label for="title">Design name</label>
+        <input id="title" name="title" placeholder="e.g. Peacock border" required>
+        <label for="image1">Picture of the motif</label>
+        <input id="image1" type="file" name="image" accept="image/png,image/jpeg,image/gif" required>
+        <p><button class="btn">Register design</button></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h3>Check a picture only</h3>
+      <p class="muted">Nothing is saved. Use this to see if a design already exists.</p>
+      <form method="post" enctype="multipart/form-data" th:action="@{/designs/check}">
+        <label for="image2">Picture to check</label>
+        <input id="image2" type="file" name="image" accept="image/png,image/jpeg,image/gif" required>
+        <p><button class="btn btn-outline">Check for look-alikes</button></p>
+      </form>
+
+      <div th:if="${checked}">
+        <p th:if="${#lists.isEmpty(matches)}" class="flash ok">No look-alikes found.</p>
+        <div th:unless="${#lists.isEmpty(matches)}">
+          <p class="flash err">Possible look-alikes found:</p>
+          <ul class="jobs">
+            <li th:each="m : ${matches}">
+              <b th:text="${m.design().title}">Design</b>
+              by <span th:text="${m.design().weaver.name}">Weaver</span>
+              <span class="badge b-pre" th:text="${#numbers.formatDecimal(m.percent(), 1, 0)} + '% alike · ' + ${m.method()}">95% alike</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="section-head"><h2>Registered designs</h2></div>
+  <p th:if="${#lists.isEmpty(designs)}" class="lead">No designs registered yet.</p>
+  <div class="products">
+    <div class="pcard" th:each="d : ${designs}">
+      <div class="img"><img th:src="@{'/uploads/' + ${d.motifImage}}" th:alt="${d.title}"></div>
+      <div class="body">
+        <b th:text="${d.title}">Design</b>
+        <div class="muted" th:text="'by ' + ${d.weaver.name}">by Weaver</div>
+        <div class="muted small" th:text="'Registered ' + ${#temporals.format(d.registeredOn, 'dd MMM yyyy HH:mm')}">date</div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

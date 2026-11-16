@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Verify a product')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <h1 class="page-title" th:text="${myShopOnly} ? 'My product passports' : 'Verify a product'">Verify a product</h1>
+  <p class="lead" th:text="${myShopOnly} ? 'Open a passport to print its QR code or add history.' : 'Every product has a passport. Scan the QR code on the product, or open one below.'">Every product has a passport.</p>
+
+  <div class="products">
+    <a th:each="p, s : ${products}" class="pcard" th:href="@{/passport/{id}(id=${p.id})}">
+      <div class="img weave" th:classappend="${s.odd} ? 't2' : 't1'">
+        <img th:if="${p.imageFile != null}" th:src="@{'/uploads/' + ${p.imageFile}}" th:alt="${p.title}">
+      </div>
+      <div class="body">
+        <b th:text="${p.title}">Product</b>
+        <div class="muted" th:text="'by ' + ${p.weaver.name}">by Weaver</div>
+      </div>
+    </a>
+  </div>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

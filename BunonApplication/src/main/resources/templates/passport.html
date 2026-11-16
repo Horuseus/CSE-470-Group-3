@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Product passport')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <div class="grid-2 wide-left">
+    <section class="panel">
+      <p class="eyebrow">Product passport</p>
+      <h1 class="page-title" th:text="${product.title}">Product</h1>
+
+      <p>
+        <span class="badge big" th:classappend="${valid} ? 'b-stock' : 'b-pre'"
+              th:text="${valid} ? '✔ History verified: no entry has been changed' : '⚠ History was changed. Do not trust this passport.'">verified</span>
+      </p>
+
+      <!-- Craft seal: shown only when an administrator has awarded one -->
+      <div class="seal" th:if="${seal != null}">
+        <span class="seal-icon">✔</span>
+        <div>
+          <b th:text="'Authentic Handloom Craft Seal · ' + ${seal.level}">Seal</b>
+          <div class="muted small" th:text="'Issued ' + ${#temporals.format(seal.issuedOn, 'dd MMM yyyy')} + ' · ' + ${seal.evidence}">details</div>
+        </div>
+      </div>
+      <p th:if="${seal == null}" class="muted">No craft seal awarded yet.</p>
+
+      <table class="kv">
+        <tr><th>Weaver</th><td th:text="${product.weaver.name}">Name</td></tr>
+        <tr><th>Shop location</th>
+            <td><span th:text="${product.weaver.district}">District</span><span th:if="${not #strings.isEmpty(product.weaver.shopAddress)}" th:text="', ' + ${product.weaver.shopAddress}"></span></td></tr>
+        <tr><th>Loom</th><td th:text="${product.loom?.loomType} ?: '-'">Loom</td></tr>
+        <tr><th>Material</th><td th:text="${product.material}">Material</td></tr>
+        <tr><th>Weave</th><td th:text="${product.weaveType}">Weave</td></tr>
+        <tr><th>Design</th><td th:text="${product.design?.title} ?: '-'">Design</td></tr>
+        <tr><th>Finish date</th>
+            <td th:if="${finishedOn != null}" th:text="${#temporals.format(finishedOn, 'dd MMM yyyy')}">date</td>
+            <td th:if="${finishedOn == null}" th:text="${product.expectedDate != null} ? 'Expected ' + ${#temporals.format(product.expectedDate, 'dd MMM yyyy')} : 'Not finished yet'">date</td></tr>
+      </table>
+    </section>
+
+    <section class="panel center">
+      <img class="qr" th:src="@{/passport/{id}/qr.png(id=${product.id})}" alt="QR code of this passport">
+      <p class="muted small" th:text="${passportUrl}">http://localhost:8080/passport/1</p>
+      <p class="no-print">
+        <a class="btn btn-small" th:href="@{/passport/{id}/qr.png(id=${product.id}, download=true)}">Download QR</a>
+        <button type="button" class="btn btn-small btn-outline" onclick="window.print()">Print passport</button>
+      </p>
+      <p class="muted small no-print">To scan with a phone, set <code>bunon.public-url</code> in application.properties to your computer's network address.</p>
+    </section>
+  </div>
+
+  <div class="section-head"><h2>History</h2></div>
+  <div class="timeline">
+    <div class="event" th:each="e : ${entries}">
+      <b th:text="${e.eventType}">WOVEN</b>
+      <span class="muted small" th:text="${#temporals.format(e.createdAt, 'dd MMM yyyy HH:mm')}">date</span>
+      <p th:text="${e.details}">details</p>
+      <code th:text="'#' + ${#strings.substring(e.hash, 0, 10)}">#abc</code>
+    </div>
+  </div>
+
+  <section class="panel no-print" th:if="${manage}">
+    <h3>Add a history entry (weaver only)</h3>
+    <form method="post" class="row" th:action="@{/passport/{id}/entries(id=${product.id})}">
+      <div>
+        <label>What happened?</label>
+        <select name="eventType"><option th:each="t : ${eventTypes}" th:value="${t}" th:text="${t}">WOVEN</option></select>
+      </div>
+      <div style="flex:3"><label>Details</label><input name="details" required></div>
+      <div class="shrink"><button class="btn">Add entry</button></div>
+    </form>
+  </section>
+  <p class="no-print" th:if="${isOwner and !manage}"><a class="btn btn-outline" th:href="@{/passport/{id}(id=${product.id}, manage=true)}">I am the weaver: add history</a></p>
+  <p class="no-print" th:if="${isOwner}"><a class="link-strong" th:href="@{/availability}">← Back to my stock</a></p>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
