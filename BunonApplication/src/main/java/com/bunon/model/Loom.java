@@ -4,21 +4,20 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** F1: one loom owned by a weaver, with the hours per week it can run. */
+
 @Entity
 public class Loom {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String loomType;        // e.g. "Pit loom"
-    private int weeklyHours;        // working hours per week
-    private String status = "ACTIVE";   // ACTIVE or MAINTENANCE
-
-    @ManyToOne                       // many looms belong to one weaver
+    private String loomType;        
+    private int weeklyHours;        
+    private String status = "ACTIVE";   
+    @ManyToOne                       
     private Weaver weaver;
 
-    // One loom has many jobs. If the loom is deleted, its jobs go too.
+    
     @OneToMany(mappedBy = "loom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubOrder> jobs = new ArrayList<>();
 
