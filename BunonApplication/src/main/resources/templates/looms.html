@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Loom Schedule')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container workspace">
+  <aside th:replace="~{fragments :: weaverSidebar('looms')}"></aside>
+<main class="workspace-main">
+  <h1 class="page-title">Loom capacity and production schedule</h1>
+  <p class="lead">Add your looms, list the work waiting on each one, and see the earliest realistic finish date for a new order.</p>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h3>When can a new order be finished?</h3>
+      <form method="get" th:action="@{/looms}">
+        <label for="hours">Weaving hours the new order needs</label>
+        <input id="hours" type="number" name="hours" min="1" th:value="${hours}" required>
+        <p><button class="btn btn-accent">Estimate</button></p>
+      </form>
+      <p th:if="${bestDate != null}" class="flash ok">
+        Fastest finish: <b th:text="${#temporals.format(bestDate, 'dd MMM yyyy')}">01 Jan 2027</b>
+      </p>
+    </section>
+
+    <section class="panel">
+      <h3>Add a loom</h3>
+      <form method="post" th:action="@{/looms/add}">
+        <label for="loomType">Loom type</label>
+        <input id="loomType" name="loomType" placeholder="Pit loom, frame loom..." required>
+        <label for="weeklyHours">Working hours per week</label>
+        <input id="weeklyHours" type="number" name="weeklyHours" min="1" max="168" value="40" required>
+        <p><button class="btn">Add loom</button></p>
+      </form>
+    </section>
+  </div>
+
+  <p th:if="${#lists.isEmpty(rows)}" class="lead">No looms yet. Add your first loom above.</p>
+
+  <section class="panel" th:each="row : ${rows}" th:with="loom=${row.loom()}">
+    <form method="post" class="row" th:action="@{/looms/{id}/update(id=${loom.id})}">
+      <div style="flex:2">
+        <label>Loom type</label>
+        <input name="loomType" th:value="${loom.loomType}" required>
+      </div>
+      <div>
+        <label>Hours per week</label>
+        <input type="number" name="weeklyHours" min="1" max="168" th:value="${loom.weeklyHours}" required>
+      </div>
+      <div>
+        <label>Status</label>
+        <select name="status">
+          <option value="ACTIVE" th:selected="${loom.status == 'ACTIVE'}">Active</option>
+          <option value="MAINTENANCE" th:selected="${loom.status == 'MAINTENANCE'}">Maintenance</option>
+        </select>
+      </div>
+      <div class="shrink"><button class="btn">Save</button></div>
+    </form>
+
+    <p>
+      Work waiting: <b th:text="${row.pendingHours()} + ' hours'">0 hours</b>
+      <span th:if="${hours != null}">
+        &nbsp;|&nbsp; New order done by:
+        <b th:if="${row.estimate() != null}" th:text="${#temporals.format(row.estimate(), 'dd MMM yyyy')}">date</b>
+        <b th:if="${row.estimate() == null}">not available (loom is in maintenance)</b>
+        <span class="badge b-stock" th:if="${row.estimate() != null and row.estimate().equals(bestDate)}">Fastest</span>
+      </span>
+    </p>
+
+    <ul class="jobs">
+      <li th:each="job : ${loom.jobs}">
+        <span th:text="${job.title} + ' (' + ${job.hoursRequired} + ' h)'" th:class="${job.done} ? 'done'">Job</span>
+        <form th:unless="${job.done}" method="post" th:action="@{/jobs/{id}/done(id=${job.id})}" class="inline">
+          <button class="btn btn-small btn-outline">Mark done</button>
+        </form>
+        <span th:if="${job.done}" class="badge b-out">Done</span>
+      </li>
+    </ul>
+
+    <div class="row">
+      <form method="post" class="row" style="flex:3" th:action="@{/looms/{id}/jobs(id=${loom.id})}">
+        <div style="flex:2"><label>New job</label><input name="title" placeholder="e.g. Saree for a customer" required></div>
+        <div><label>Hours</label><input type="number" name="hours" min="1" value="10" required></div>
+        <div class="shrink"><button class="btn btn-outline">Add job</button></div>
+      </form>
+      <form method="post" class="shrink" th:action="@{/looms/{id}/delete(id=${loom.id})}">
+        <button class="btn btn-danger btn-small">Remove loom</button>
+      </form>
+    </div>
+  </section>
+</main>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
