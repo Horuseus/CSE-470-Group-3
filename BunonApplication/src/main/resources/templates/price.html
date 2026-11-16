@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Price Calculator')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container workspace">
+  <aside th:replace="~{fragments :: weaverSidebar('price')}"></aside>
+<main class="workspace-main">
+  <h1 class="page-title">Pricing breakdown calculator</h1>
+  <p class="lead">Price = material cost + (labor hours × hourly rate) + other costs.</p>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h3>Enter your costs (in Taka)</h3>
+      <form method="post" th:action="@{/price/calculate}">
+        <label>Material cost (yarn, dye)</label>
+        <input type="number" name="materialCost" min="0" step="0.01" required>
+        <label>Labor hours</label>
+        <input type="number" name="laborHours" min="0" step="0.1" required>
+        <label>Hourly rate</label>
+        <input type="number" name="hourlyRate" min="0" step="0.01" required>
+        <label>Other costs (packaging, transport)</label>
+        <input type="number" name="otherCost" min="0" step="0.01" value="0">
+        <label>For which product? (optional)</label>
+        <select name="productId">
+          <option value="">Not linked to a product</option>
+          <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.title}">Product</option>
+        </select>
+        <p><button class="btn btn-accent">Calculate price</button></p>
+      </form>
+    </section>
+
+    <section class="panel" th:if="${estimate != null}">
+      <h3>Suggested price</h3>
+      <div class="big-price" th:text="'৳ ' + ${#numbers.formatDecimal(estimate.total, 1, 'COMMA', 0, 'POINT')}">৳ 0</div>
+
+      <div class="bar">
+        <span class="seg s-mat" th:style="'width:' + ${#numbers.formatDecimal(estimate.materialPercent, 1, 0)} + '%'"></span>
+        <span class="seg s-lab" th:style="'width:' + ${#numbers.formatDecimal(estimate.laborPercent, 1, 0)} + '%'"></span>
+        <span class="seg s-oth" th:style="'width:' + ${#numbers.formatDecimal(estimate.otherPercent, 1, 0)} + '%'"></span>
+      </div>
+      <table class="kv">
+        <tr><th><span class="dot s-mat"></span> Material</th><td th:text="'৳ ' + ${#numbers.formatDecimal(estimate.materialCost, 1, 'COMMA', 0, 'POINT')}">0</td></tr>
+        <tr><th><span class="dot s-lab"></span> Labor</th><td th:text="'৳ ' + ${#numbers.formatDecimal(estimate.laborCost, 1, 'COMMA', 0, 'POINT')} + ' (' + ${estimate.laborHours} + ' h × ' + ${estimate.hourlyRate} + ')'">0</td></tr>
+        <tr><th><span class="dot s-oth"></span> Other</th><td th:text="'৳ ' + ${#numbers.formatDecimal(estimate.otherCost, 1, 'COMMA', 0, 'POINT')}">0</td></tr>
+      </table>
+
+      <form th:if="${estimate.product != null}" method="post" th:action="@{/price/{id}/apply(id=${estimate.id})}">
+        <p><button class="btn" th:text="'Use as the price of ' + ${estimate.product.title}">Use this price</button></p>
+      </form>
+    </section>
+  </div>
+
+  <div class="section-head"><h2>Recent estimates</h2></div>
+  <p th:if="${#lists.isEmpty(recent)}" class="lead">No estimates yet.</p>
+  <table class="list" th:unless="${#lists.isEmpty(recent)}">
+    <tr><th>Date</th><th>Product</th><th>Total</th><th></th></tr>
+    <tr th:each="r : ${recent}">
+      <td th:text="${#temporals.format(r.createdOn, 'dd MMM yyyy HH:mm')}">date</td>
+      <td th:text="${r.product != null} ? ${r.product.title} : '-'">product</td>
+      <td th:text="'৳ ' + ${#numbers.formatDecimal(r.total, 1, 'COMMA', 0, 'POINT')}">total</td>
+      <td><a th:href="@{/price(estimateId=${r.id})}">View</a></td>
+    </tr>
+  </table>
+</main>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
