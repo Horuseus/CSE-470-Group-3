@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Stock and pre-orders')}"></head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="container workspace">
+  <aside th:replace="~{fragments :: weaverSidebar('availability')}"></aside>
+<main class="workspace-main">
+  <h1 class="page-title">Availability and pre-orders</h1>
+  <p class="lead">Keep stock, expected completion dates and pre-order status up to date. Customers see changes on the home page straight away.</p>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <details class="panel">
+    <summary><b>Add a new product</b></summary>
+    <form method="post" enctype="multipart/form-data" th:action="@{/availability/add}">
+      <div class="row">
+        <div style="flex:2"><label>Title</label><input name="title" required></div>
+        <div>
+          <label>Category</label>
+          <select name="category"><option th:each="c : ${categories}" th:value="${c}" th:text="${c}">Saree</option></select>
+        </div>
+        <div><label>Weave</label><input name="weaveType" placeholder="Jamdani, Khadi..." required></div>
+        <div><label>Material</label><input name="material" placeholder="Cotton, silk..." required></div>
+      </div>
+      <div class="row">
+        <div><label>Price (৳)</label><input type="number" name="price" min="0" step="1" required></div>
+        <div><label>Stock</label><input type="number" name="stockQty" min="0" value="1" required></div>
+        <div><label>Expected date</label><input type="date" name="expectedDate"></div>
+        <div class="shrink"><label>Pre-order?</label><input type="checkbox" name="preorder"></div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Made on loom</label>
+          <select name="loomId"><option value="">None</option><option th:each="l : ${looms}" th:value="${l.id}" th:text="${l.loomType}">Loom</option></select>
+        </div>
+        <div>
+          <label>Registered design</label>
+          <select name="designId"><option value="">None</option><option th:each="d : ${designs}" th:value="${d.id}" th:text="${d.title}">Design</option></select>
+        </div>
+        <div><label>Photo (optional)</label><input type="file" name="image" accept="image/png,image/jpeg,image/gif"></div>
+      </div>
+      <p><button class="btn">Add product</button></p>
+    </form>
+  </details>
+
+  <p th:if="${#lists.isEmpty(products)}" class="lead">No products yet. Add one above.</p>
+
+  <section class="panel" th:each="p : ${products}">
+    <div class="row">
+      <div style="flex:2">
+        <b th:text="${p.title}">Product</b>
+        <div class="muted" th:text="${p.category} + ' · ' + ${p.weaveType} + ' · ৳ ' + ${#numbers.formatDecimal(p.price, 1, 'COMMA', 0, 'POINT')}">details</div>
+        <span class="badge" th:classappend="${p.preorder} ? 'b-pre' : (${p.stockQty > 0} ? 'b-stock' : 'b-out')" th:text="${p.availabilityLabel}">In stock</span>
+      </div>
+
+      <form method="post" class="row" style="flex:4" th:action="@{/availability/{id}/update(id=${p.id})}">
+        <div><label>Stock</label><input type="number" name="stockQty" min="0" th:value="${p.stockQty}" required></div>
+        <div><label>Expected date</label><input type="date" name="expectedDate" th:value="${p.expectedDate}"></div>
+        <div class="shrink"><label>Pre-order?</label><input type="checkbox" name="preorder" th:checked="${p.preorder}"></div>
+        <div class="shrink"><button class="btn">Update</button></div>
+      </form>
+
+      <a class="btn btn-outline btn-small" th:href="@{/passport/{id}(id=${p.id}, manage=true)}">Passport</a>
+    </div>
+  </section>
+</main>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
